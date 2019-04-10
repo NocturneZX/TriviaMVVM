@@ -14,7 +14,7 @@ class APIClientService: NSObject {
     
     func getQuizResultsData(complete: @escaping DataRetrievalComplete) throws {
         let urlEndpoint = Result.endpointForResults()
-        guard let url = URL(string: urlEndpoint) else {
+        guard URL(string: urlEndpoint) != nil else {
             print( "Something went wrong. No URL processed. On guard.")
             throw NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL, userInfo: nil)
         }
@@ -28,7 +28,7 @@ class APIClientService: NSObject {
 
         
         // set up the session
-        let task = URLSession.shared.resultsTask(with: url) { results, response, error in
+        let task = URLSession.shared.resultsTask(with: newURL!.url!) { results, response, error in
             guard let results = results else { print("Error getting data for user"); return }
             self.resultList = results
             complete()
